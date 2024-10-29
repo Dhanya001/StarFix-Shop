@@ -854,3 +854,57 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 }
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Register and Login Buttons')),
+        body: RegisterLoginScreen(),
+      ),
+    );
+  }
+}
+
+class RegisterLoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(
+              'Welcome to the App!',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () {
+                  // Register button logic here
+                },
+                child: Text('Register'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Login button logic here
+                },
+                child: Text('Login'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
