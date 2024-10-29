@@ -402,3 +402,455 @@ class _HomepageState extends State<Homepage> {
     );
   }
 }
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+class OnboardingPage extends StatefulWidget {
+  @override
+  _OnboardingPageState createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  // Dummy data for onboarding images and texts
+  final List<String> _images = [
+    'assets/image1.png', // Replace with your image paths
+    'assets/image2.png',
+    'assets/image3.png',
+  ];
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  void _onNext() {
+    if (_currentPage < _images.length - 1) {
+      _pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.ease,
+      );
+    } else {
+      // Navigate to the main screen or perform any other action
+    }
+  }
+
+  void _onSkip() {
+    // Handle skip action, like navigating to the main screen
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: _images.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      _images[index],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Welcome to the App!', // Customize the text for each page
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: TextButton(
+              onPressed: _onSkip,
+              child: Text(
+                'Skip',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: _images.length,
+                effect: ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  expansionFactor: 3, // Controls how much the dot expands
+                  activeDotColor: Colors.blue,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: _onNext,
+              child: Text(_currentPage == _images.length - 1 ? 'Finish' : 'Next'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+class OnboardingPage extends StatefulWidget {
+  @override
+  _OnboardingPageState createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  // Dummy data for onboarding images and texts
+  final List<String> _images = [
+    'assets/image1.png', // Replace with your image paths
+    'assets/image2.png',
+    'assets/image3.png',
+  ];
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  void _onNext() {
+    if (_currentPage < _images.length - 1) {
+      _pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.ease,
+      );
+    } else {
+      // Navigate to the main screen or perform any other action
+    }
+  }
+
+  void _onSkip() {
+    // Handle skip action, like navigating to the main screen
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: _images.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      _images[index],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Welcome to the App!', // Customize the text for each page
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: TextButton(
+              onPressed: _onSkip,
+              child: Text(
+                'Skip',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: _images.length,
+                effect: ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  expansionFactor: 3, // Controls how much the dot expands
+                  activeDotColor: Colors.blue,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: _onNext,
+              child: Text(_currentPage == _images.length - 1 ? 'Finish' : 'Next'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+class OnboardingPage extends StatefulWidget {
+  @override
+  _OnboardingPageState createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  // Dummy data for onboarding images and texts
+  final List<String> _images = [
+    'assets/image1.png', // Replace with your image paths
+    'assets/image2.png',
+    'assets/image3.png',
+  ];
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  void _onNext() {
+    if (_currentPage < _images.length - 1) {
+      _pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.ease,
+      );
+    } else {
+      // Navigate to the main screen or perform any other action
+    }
+  }
+
+  void _onSkip() {
+    // Handle skip action, like navigating to the main screen
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: _images.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      _images[index],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Welcome to the App!', // Customize the text for each page
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: TextButton(
+              onPressed: _onSkip,
+              child: Text(
+                'Skip',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: _images.length,
+                effect: ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  expansionFactor: 3, // Controls how much the dot expands
+                  activeDotColor: Colors.blue,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: _onNext,
+              child: Text(_currentPage == _images.length - 1 ? 'Finish' : 'Next'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+class OnboardingPage extends StatefulWidget {
+  @override
+  _OnboardingPageState createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  // Dummy data for onboarding images and texts
+  final List<String> _images = [
+    'assets/image1.png', // Replace with your image paths
+    'assets/image2.png',
+    'assets/image3.png',
+  ];
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  void _onNext() {
+    if (_currentPage < _images.length - 1) {
+      _pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.ease,
+      );
+    } else {
+      // Navigate to the main screen or perform any other action
+    }
+  }
+
+  void _onSkip() {
+    // Handle skip action, like navigating to the main screen
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: _images.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      _images[index],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Welcome to the App!', // Customize the text for each page
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: TextButton(
+              onPressed: _onSkip,
+              child: Text(
+                'Skip',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: _images.length,
+                effect: ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  expansionFactor: 3, // Controls how much the dot expands
+                  activeDotColor: Colors.blue,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: _onNext,
+              child: Text(_currentPage == _images.length - 1 ? 'Finish' : 'Next'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
