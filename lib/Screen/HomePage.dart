@@ -1074,3 +1074,333 @@ class _RateCardPickupState extends State<RateCardPickup> {
     );
   }
 }
+
+
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Schedulersummary(rateItems: rateItems),
+      ),
+    );
+  },
+  child: Text("Proceed"),
+),
+
+
+import 'package:flutter/material.dart';
+import 'package:scrapapp/Utility/Widget_Helper.dart';
+import 'package:scrapapp/screens/HomePage.dart';
+import 'package:gap/gap.dart';
+
+class Schedulersummary extends StatefulWidget {
+  final DateTime selectedDate;
+  final String estimatedWeight;
+
+  const Schedulersummary({super.key, required this.selectedDate, required this.estimatedWeight});
+
+  @override
+  State<Schedulersummary> createState() => _SchedulersummaryState();
+}
+
+class _SchedulersummaryState extends State<Schedulersummary> {
+  final TextEditingController _notescontroller = TextEditingController();
+
+  String _monthName(int month) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return monthNames[month - 1];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appbar(context, "Schedule Pick Up", "Pick Up Summary"),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20),
+              child: Text(
+                "${widget.selectedDate.day} ${_monthName(widget.selectedDate.month)} ${widget.selectedDate.year}",
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              height: 160,
+              decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.grey, width: 2)),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: Row(
+                children: [
+                  MyMediumText(title: "Estimate Weight:", isBold: true, color: Colors.black),
+                  Gap(20),
+                  Text(widget.estimatedWeight), // Displaying the estimated weight
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: MyMediumText(title: "Notes", isBold: true, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 2, color: Colors.grey)),
+              child: TextFormField(
+                controller: _notescontroller,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  border: InputBorder.none,
+                  hintText: "Enter Product Notes",
+                ),
+                maxLines: 4,
+              ),
+            ),
+            MyBottomButton(title: "Schedule Pick Up Now", destination: HomePage())
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+import 'package:flutter/material.dart';
+import 'package:scrapapp/Utility/Widget_Helper.dart';
+import 'SchedulerSummary.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+class Calenderpickup extends StatefulWidget {
+  final String estimatedWeight;
+
+  const Calenderpickup({super.key, required this.estimatedWeight});
+
+  @override
+  State<Calenderpickup> createState() => _CalenderpickupState();
+}
+
+class _CalenderpickupState extends State<Calenderpickup> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDate;
+  int? _selectedslot;
+
+  final List<String> _timeslot = [
+    "09:00 AM - 12:00 PM",
+    "01:00 PM - 04:00 PM",
+    "05:00 PM - 08:00 PM",
+  ];
+
+  @override
+  void initState() {
+    _selectedDate = _focusedDay;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appbar(context, "Schedule Pick Up", "Pick Up Date & Time-slots"),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                child: TableCalendar(
+                  focusedDay: _focusedDay,
+                  firstDay: DateTime(1999),
+                  lastDay: DateTime(2030),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_focusedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _focusedDay = selectedDay;
+                    });
+                  },
+                  calendarStyle: CalendarStyle(
+                    todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                    selectedDecoration: BoxDecoration(color: Theme.of(context).primaryColor, shape: BoxShape.circle),
+                  ),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: MyMediumText(title: "Pick a slot", isBold: true, color: Colors.black),
+              ),
+              SizedBox(height: 10),
+              Column(
+                children: List.generate(_timeslot.length, (index) {
+                  return Container(
+                    color: Colors.white,
+                    child: RadioListTile<int>(
+                      dense: true,
+                      value: index,
+                      groupValue: _selectedslot,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedslot = value;
+                        });
+                      },
+                      title: Text(_timeslot[index], style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
+                      activeColor: Colors.green,
+                      controlAffinity: ListTileControlAffinity.trailing,
+                    ),
+                  );
+                }),
+              ),
+              MyBottomButton(
+                title: "Next",
+                destination: Schedulersummary(
+                  selectedDate: _focusedDay,
+                  estimatedWeight: widget.estimatedWeight,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:scrapapp/Utility/Widget_Helper.dart';
+import 'CalenderPickUp.dart';
+
+class CapturePickup extends StatefulWidget {
+  const CapturePickup({super.key});
+
+  @override
+  State<CapturePickup> createState() => _CapturePickupState();
+}
+
+class _CapturePickupState extends State<CapturePickup> {
+  final TextEditingController _weightcontroller = TextEditingController();
+  final picker = ImagePicker();
+  File? _image;
+
+  Future getImageGallery() async {
+    final pickedfile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedfile != null ? File(pickedfile.path) : null;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: appbar(context, "Schedule Pick Up", "Upload a Photo"),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    getImageGallery();
+                  },
+                  child: Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                    child: _image != null
+                        ? Image.file(_image!.absolute, fit: BoxFit.cover)
+                        : Center(child: Icon(Icons.add_photo_alternate_outlined, size: 30)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          MySmallText(
+            title: "Capture a clear image of the selected products.",
+            isBold: true,
+            color: Colors.black,
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: MyMediumText(title: "Estimate Weight", isBold: true, color: Colors.black),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 2, color: Colors.grey)),
+            child: TextFormField(
+              controller: _weightcontroller,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                border: InputBorder.none,
+                hintText: "Enter Product Estimate Weight",
+              ),
+            ),
+          ),
+          Spacer(),
+          MyBottomButton(
+            title: "Next",
+            destination: Calenderpickup(estimatedWeight: _weightcontroller.text),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class Schedulersummary extends StatelessWidget {
+  final List<Map<String, dynamic>> rateItems;
+
+  const Schedulersummary({Key? key, required this.rateItems}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Filter the list to include only selected items
+    final selectedItems = rateItems.where((item) => item['isChecked'] == true).toList();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Schedule Summary")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Selected Items:", style: Theme.of(context).textTheme.headline6),
+            const SizedBox(height: 10),
+            ...selectedItems.map((item) => Text(item['title'])).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
