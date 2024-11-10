@@ -908,3 +908,169 @@ class RegisterLoginScreen extends StatelessWidget {
     );
   }
 }
+
+
+import 'package:flutter/material.dart';
+
+class RateCardPickup extends StatefulWidget {
+  const RateCardPickup({super.key});
+
+  @override
+  State<RateCardPickup> createState() => _RateCardPickupState();
+}
+
+class _RateCardPickupState extends State<RateCardPickup> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> _searchItems = [];
+
+  final List<Map<String, dynamic>> rateItems = [
+    {'title': 'News paper', 'price': '₹1200/kg', 'image': 'assets/Newspaper3.png', 'isChecked': false},
+    {'title': 'Plastic Bottles', 'price': '₹10/kg', 'image': 'assets/Bottle.png', 'isChecked': false},
+    {'title': 'Aluminum Cans', 'price': '₹28/kg', 'image': 'assets/Newspaper3.png', 'isChecked': false},
+    {'title': 'E-Waste', 'price': '₹50/kg', 'image': 'assets/Bottle.png', 'isChecked': false},
+    // Add more items here
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchItems = rateItems;
+  }
+
+  void _runFilter(String keyword) {
+    List<Map<String, dynamic>> results = [];
+    if (keyword.isEmpty) {
+      results = rateItems;
+    } else {
+      results = rateItems.where((item) => item["title"]!.toLowerCase().contains(keyword.toLowerCase())).toList();
+    }
+    setState(() {
+      _searchItems = results;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text("Schedule Pick Up"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(16)),
+              child: TextFormField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(Icons.search),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  border: InputBorder.none,
+                  hintText: "Enter Product",
+                ),
+                onChanged: (value) => _runFilter(value),
+              ),
+            ),
+            Expanded(
+              child: _searchItems.isNotEmpty
+                  ? GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 2 / 3,
+                      ),
+                      itemCount: _searchItems.length,
+                      itemBuilder: (context, index) {
+                        final item = _searchItems[index];
+                        return _buildRateCardPickUp(
+                          index: index,
+                          title: item['title']!,
+                          price: item['price']!,
+                          image: item['image']!,
+                          isChecked: item['isChecked']!,
+                        );
+                      },
+                    )
+                  : const Center(child: Text("No result Found")),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRateCardPickUp({
+    required int index,
+    required String title,
+    required String price,
+    required String image,
+    required bool isChecked,
+  }) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Text(
+                    price,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Checkbox(
+                    checkColor: Colors.white,
+                    activeColor: Colors.green,
+                    value: isChecked,
+                    onChanged: (bool? newValue) {
+                      setState(() {
+                        _searchItems[index]['isChecked'] = newValue;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+}
