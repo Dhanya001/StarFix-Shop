@@ -309,3 +309,66 @@ class _CartpageState extends State<Cartpage> {
     );
   }
 }
+
+
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => CalendarPickupPage(
+      selectedItems: selectedItems,
+    ),
+  ),
+);
+
+
+class CalendarPickupPage extends StatelessWidget {
+  final List<String> selectedItems;
+
+  CalendarPickupPage({required this.selectedItems});
+
+  @override
+  Widget build(BuildContext context) {
+    // Your existing code for CalendarPickupPage
+  }
+}
+
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => SummaryPickup(
+      selectedDate: selectedDate, // Assuming you have this in CalendarPickupPage
+      selectedSlot: selectedSlot, // Assuming you have this in CalendarPickupPage
+      selectedItems: selectedItems,
+    ),
+  ),
+);
+
+
+for title
+
+// In RateCardPickupPage, create a list of titles
+final List<String> selectedItemTitles = selectedItems.map((item) => item.title).toList();
+
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => CalendarPickupPage(
+      selectedItemTitles: selectedItemTitles,
+    ),
+  ),
+);
+
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => SummaryPickup(
+      selectedDate: selectedDate,
+      selectedSlot: selectedSlot,
+      selectedItemTitles: selectedItemTitles,
+    ),
+  ),
+);
